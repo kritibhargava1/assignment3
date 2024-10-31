@@ -2,3 +2,5 @@ submission.zip
 apps/.service
 __pycache__
 
+.DS_Store
+venv/

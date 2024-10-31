@@ -2,23 +2,22 @@
 This file defines the database models
 """
 
-import datetime
-from .common import db, Field, auth
+
+from pydal import Field
+from .common import db, auth
 from pydal.validators import IS_NOT_EMPTY
 
-def get_user_email():
-    return auth.current_user.get('email') if auth.current_user else None
 
-def get_time():
-    return datetime.datetime.utcnow()
+# Define a helper function to get the current user's ID
+def get_user_id():
+    return auth.current_user.get('id') if auth.current_user else None
 
-
+# Define the shopping list table
 db.define_table(
     'shopping_list',
-    Field('user_id', 'reference auth_user', readable=False, writable=False),
     Field('item_name', 'string', requires=IS_NOT_EMPTY()),
     Field('purchased', 'boolean', default=False),
+    Field('user_id', 'reference auth_user', default=get_user_id),  # Ensure get_user_id is correctly defined
 )
-
-
 db.commit()
+
